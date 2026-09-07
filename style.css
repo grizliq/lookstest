@@ -867,20 +867,51 @@ p{margin:0;}
 .scan__stage{
   position:relative;
   overflow:hidden;
-  background:radial-gradient(circle at 50% 46%, rgba(181,244,45,.09) 0%, rgba(181,244,45,0) 62%);
+  aspect-ratio:1/1;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 50%, rgba(181,244,45,.10) 0%, rgba(181,244,45,0) 64%);
   transition:background .6s var(--ease);
 }
+
+/* скобки видоискателя */
+.scan__corner{
+  position:absolute;width:8.5%;aspect-ratio:1/1;
+  border:2px solid var(--lime);opacity:.55;z-index:3;
+  transition:opacity .4s var(--ease);
+}
+.scan__corner:nth-of-type(1){top:4%;left:4%;border-right:0;border-bottom:0;border-radius:6px 0 0 0;}
+.scan__corner:nth-of-type(2){top:4%;right:4%;border-left:0;border-bottom:0;border-radius:0 6px 0 0;}
+.scan__corner:nth-of-type(3){bottom:4%;left:4%;border-right:0;border-top:0;border-radius:0 0 0 6px;}
+.scan__corner:nth-of-type(4){bottom:4%;right:4%;border-left:0;border-top:0;border-radius:0 0 6px 0;}
+.scan.is-running .scan__corner,.scan.is-done .scan__corner{opacity:1;}
+
+/* кольцо со шкалой */
+.scan__rings{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:94%;height:auto;z-index:1;
+  fill:none;stroke:var(--line-strong);stroke-width:.9;
+  transition:stroke .5s var(--ease);
+}
+.scan__rings circle:last-of-type{stroke-dasharray:2 6;}
+.scan.is-running .scan__rings,.scan.is-done .scan__rings{stroke:var(--lime-line);}
 .scan.is-done .scan__stage{
-  background:radial-gradient(circle at 50% 46%, rgba(181,244,45,.17) 0%, rgba(181,244,45,0) 66%);
+  background:radial-gradient(circle at 50% 50%, rgba(181,244,45,.19) 0%, rgba(181,244,45,0) 68%);
 }
 
 /* height:auto обязателен: HTML-атрибут height иначе задаёт
    фиксированную высоту и перебивает пропорции */
+/* Бюст вертикальный, сцена квадратная — задаём высоту, ширина считается сама.
+   Иначе портретная картинка вылезает за круг. */
 .scan__shot{
+  position:relative;z-index:2;
   display:block;
-  width:100%;height:auto;
-  aspect-ratio:660/524;
-  object-fit:cover;
+  height:92%;width:auto;max-width:78%;
+  align-self:end;
+  aspect-ratio:440/612;
+  object-fit:contain;
+  /* низ шеи растворяем, иначе он обрывается ровной линией по краю сцены */
+  -webkit-mask-image:linear-gradient(180deg,#000 84%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 84%,transparent 100%);
   filter:saturate(.62) brightness(.97);
   transition:filter .7s var(--ease);
 }

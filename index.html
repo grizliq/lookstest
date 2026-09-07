@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=859dcc71">
+<link rel="stylesheet" href="style.css?v=b67d6c7d">
 <script src="app.js?v=7daabf76" defer></script>
 </head>
 <body>
@@ -75,11 +75,23 @@
         <div class="scan" id="heroScan">
           <div class="scan__frame">
             <div class="scan__stage">
-              <!-- Персонаж и вся оптика — скобки, кольцо, сетка на лице —
-                   в самой картинке. CSS рисует только луч поверх неё. -->
+              <!-- Скобки и кольцо рисует CSS: в исходной картинке они были
+                   полупрозрачными и после вырезания фона рассыпались в шум.
+                   В картинке остался только бюст с сеткой на лице. -->
+              <span class="scan__corner" aria-hidden="true"></span>
+              <span class="scan__corner" aria-hidden="true"></span>
+              <span class="scan__corner" aria-hidden="true"></span>
+              <span class="scan__corner" aria-hidden="true"></span>
+
+              <svg class="scan__rings" viewBox="0 0 200 200" aria-hidden="true">
+                <circle cx="100" cy="100" r="88"/>
+                <circle cx="100" cy="100" r="79"/>
+                <path d="M100 4v13M100 183v13M4 100h13M183 100h13"/>
+              </svg>
+
               <img class="scan__shot" src="img/scan-statue.png"
-                   alt="Разбор внешности: точки и сетка на лице античной статуи"
-                   width="660" height="524" fetchpriority="high" decoding="async">
+                   alt="Разбор внешности: сетка опорных точек на лице античной статуи"
+                   width="440" height="612" fetchpriority="high" decoding="async">
               <span class="scan__beam" aria-hidden="true"></span>
             </div>
 
