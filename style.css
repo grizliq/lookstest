@@ -423,7 +423,6 @@ p{margin:0;}
   .faq-item .answer{padding:0 22px 20px 18px;}
 }
 
-
 /* ============================================================
    Демо-разбор в герое
    Силуэт лица со сканирующей линией + панель метрик. Никаких
@@ -529,7 +528,6 @@ p{margin:0;}
   .scan__score b{font-size:38px;}
 }
 
-
 /* ============================================================
    Шкала AI-скора (интерактивная)
    Клик по сегменту подсвечивает строку в таблице ниже — так
@@ -580,37 +578,6 @@ p{margin:0;}
   .ladder__strip{gap:3px;}
 }
 
-
-/* ------------------------------------------------------------
-   Сцена вокруг лица: скобки видоискателя, кольца, боковые
-   подписи. Повторяет подачу бота, но собрано на CSS и SVG.
-   ------------------------------------------------------------ */
-.scan__stage{
-  position:relative;
-  border-radius:var(--r-card);
-  background:
-    radial-gradient(circle at 50% 46%, rgba(181,244,45,.10) 0%, rgba(181,244,45,0) 58%),
-    linear-gradient(180deg, var(--surface-3), var(--surface-2));
-  border:1px solid var(--line);
-  padding:26px 18px 20px;
-  overflow:hidden;
-  transition:box-shadow .5s var(--ease),border-color .5s var(--ease);
-}
-.scan.is-done .scan__stage{border-color:var(--lime-line);box-shadow:inset 0 0 40px -14px rgba(181,244,45,.35);}
-
-/* боковые подписи */
-/* Разведены по противоположным углам: на узкой карточке в одну строку
-   они налезают друг на друга. */
-.scan__side{
-  position:absolute;
-  font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--dim);white-space:nowrap;
-  transition:color .4s var(--ease);
-}
-.scan__side--l{top:15px;left:34px;}
-.scan__side--r{bottom:15px;right:34px;}
-.scan.is-done .scan__side{color:var(--lime-deep);}
-
 /* бейдж уровня — связывает карточку с тир-листом ниже по странице */
 .scan__badge{
   margin:16px 0 0;
@@ -641,14 +608,10 @@ p{margin:0;}
 
 @media(max-width:600px){
   .scan__stage{padding:24px 12px 18px;}
-  .scan__side{font-size:7.5px;letter-spacing:.08em;}
-  .scan__side--l{left:26px;}
-  .scan__side--r{right:26px;}
 }
 @media(prefers-reduced-motion:reduce){
   .scan__badge{transition:opacity .45s var(--ease) !important;transform:none !important;}
 }
-
 
 /* ============================================================
    Карточки «что смотрит алгоритм»
@@ -813,7 +776,6 @@ p{margin:0;}
   .feat__no{top:15px;right:16px;}
 }
 
-
 /* ============================================================
    Дорожка шагов («как проходит оценка»)
    ============================================================ */
@@ -878,7 +840,6 @@ p{margin:0;}
   .step:last-child::after{display:none;}
 }
 
-
 /* ------------------------------------------------------------
    Выравнивание нижних плашек.
    Карточки в строке грида и так одной высоты, но тег и подпись
@@ -895,24 +856,22 @@ p{margin:0;}
 .step__body p{margin-bottom:0;}
 .step__meta{margin-top:auto;padding-top:13px;}
 
-
 /* ------------------------------------------------------------
    Сцена с персонажем.
    Скобки видоискателя, кольцо и полигональная сетка на лице
    нарисованы прямо в картинке — CSS их больше не дублирует,
    иначе двоилось бы. Остаётся только луч поверх.
    ------------------------------------------------------------ */
+/* Плашки нет: у картинки вырезан фон, и сквозь неё виден цвет страницы.
+   Остаётся только подсветка под персонажем. */
 .scan__stage{
   position:relative;
-  border-radius:var(--r-card);
   overflow:hidden;
-  border:1px solid var(--line);
-  background:#eceeed;
-  transition:box-shadow .5s var(--ease),border-color .5s var(--ease);
+  background:radial-gradient(circle at 50% 46%, rgba(181,244,45,.09) 0%, rgba(181,244,45,0) 62%);
+  transition:background .6s var(--ease);
 }
 .scan.is-done .scan__stage{
-  border-color:var(--lime-line);
-  box-shadow:0 0 0 1px var(--lime-tint), 0 20px 50px -28px rgba(181,244,45,.55);
+  background:radial-gradient(circle at 50% 46%, rgba(181,244,45,.17) 0%, rgba(181,244,45,0) 66%);
 }
 
 /* height:auto обязателен: HTML-атрибут height иначе задаёт
@@ -920,7 +879,7 @@ p{margin:0;}
 .scan__shot{
   display:block;
   width:100%;height:auto;
-  aspect-ratio:900/715;
+  aspect-ratio:660/524;
   object-fit:cover;
   filter:saturate(.62) brightness(.97);
   transition:filter .7s var(--ease);
@@ -944,21 +903,7 @@ p{margin:0;}
   100% {opacity:0;top:calc(100% - 2px);}
 }
 
-/* подписи лежат на светлой плашке, поэтому тёмные, а не dim */
-.scan__side{
-  position:absolute;z-index:3;
-  font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;
-  color:rgba(20,26,18,.5);white-space:nowrap;
-  transition:color .4s var(--ease);
-}
-.scan__side--l{top:12px;left:14px;}
-.scan__side--r{bottom:12px;right:14px;}
-.scan.is-done .scan__side{color:var(--lime-deep);}
-
 @media(max-width:600px){
-  .scan__side{font-size:7.5px;letter-spacing:.08em;}
-  .scan__side--l{left:11px;top:10px;}
-  .scan__side--r{right:11px;bottom:10px;}
 }
 @media(prefers-reduced-motion:reduce){
   .scan__beam{top:50%;}
