@@ -117,7 +117,49 @@
     upd();
   }
 
-  function boot() { initScan(); initNav(); }
+
+  /* ----------------------------------------------------------
+     Шкала AI-скора: клик по сегменту подсвечивает строку таблицы.
+     Связь через data-tier — индекс строки, а не позиция в DOM,
+     чтобы порядок строк можно было менять, не трогая скрипт.
+     ---------------------------------------------------------- */
+  function initLadder() {
+    var box = document.getElementById('ladder');
+    var table = document.querySelector('.tiers tbody');
+    if (!box || !table) return;
+
+    var segs = [].slice.call(box.querySelectorAll('.ladder__seg'));
+    var out = box.querySelector('[data-role="ladder-name"]');
+    var outLine = box.querySelector('.ladder__out');
+
+    function pick(seg) {
+      var tier = seg.getAttribute('data-tier');
+      segs.forEach(function (s) { s.classList.toggle('is-active', s === seg); });
+
+      var row = table.querySelector('tr[data-tier="' + tier + '"]');
+      [].forEach.call(table.rows, function (r) { r.classList.toggle('is-active', r === row); });
+
+      if (row && out) {
+        out.textContent = row.cells[1].textContent.trim();
+        outLine.innerHTML = 'Диапазон <b>' + seg.getAttribute('data-range') +
+          '</b> — это <span data-role="ladder-name">' + row.cells[1].textContent.trim() + '</span>';
+        out = outLine.querySelector('[data-role="ladder-name"]');
+      }
+    }
+
+    segs.forEach(function (s) {
+      s.addEventListener('click', function () { pick(s); });
+    });
+
+    // стартовое состояние: подсвечена строка, в которую попадает пример из героя
+    var start = box.querySelector('.ladder__seg.is-active');
+    if (start) {
+      var r = table.querySelector('tr[data-tier="' + start.getAttribute('data-tier') + '"]');
+      if (r) r.classList.add('is-active');
+    }
+  }
+
+  function boot() { initScan(); initNav(); initLadder(); }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
