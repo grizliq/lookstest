@@ -443,19 +443,6 @@ p{margin:0;}
 }
 .scan.is-done .scan__frame{border-color:var(--lime-line);box-shadow:0 0 0 1px var(--lime-tint),0 24px 60px -30px rgba(181,244,45,.5);}
 
-.scan__face{position:relative;display:block;width:100%;height:auto;aspect-ratio:1/1;max-width:210px;margin:0 auto;}
-.scan__face svg{display:block;width:100%;height:auto;}
-.scan__outline{fill:none;stroke:var(--line-strong);stroke-width:1.6;}
-.scan__mesh{fill:none;stroke:rgba(181,244,45,.28);stroke-width:1;opacity:0;transition:opacity .5s var(--ease);}
-.scan.is-running .scan__mesh,.scan.is-done .scan__mesh{opacity:1;}
-.scan__dot{fill:var(--lime);opacity:0;transition:opacity .4s var(--ease);}
-.scan__dot circle{r:1.7;}
-.scan.is-done .scan__dot{opacity:1;}
-/* полигональная сетка: тоньше и бледнее опорных линий, иначе спорит с ними */
-.scan__grid{fill:none;stroke:rgba(181,244,45,.22);stroke-width:.7;opacity:0;transition:opacity .6s var(--ease);}
-.scan.is-running .scan__grid,.scan.is-done .scan__grid{opacity:1;}
-.scan.is-done .scan__dot{opacity:1;}
-
 /* сканирующая линия — единственное движение на странице */
 .scan__beam{
   position:absolute;left:0;right:0;height:2px;top:0;
@@ -516,7 +503,6 @@ p{margin:0;}
     100% {opacity:0;}
   }
   .scan__fill{transition:width .85s var(--ease) !important;}
-  .scan__mesh,.scan__dot,.scan__grid{transition:opacity .5s var(--ease) !important;}
 }
 
 /* ============================================================
@@ -612,14 +598,6 @@ p{margin:0;}
 }
 .scan.is-done .scan__stage{border-color:var(--lime-line);box-shadow:inset 0 0 40px -14px rgba(181,244,45,.35);}
 
-/* скобки по углам */
-.scan__corner{position:absolute;width:17px;height:17px;border:2px solid var(--lime);opacity:.5;transition:opacity .4s var(--ease);}
-.scan__corner:nth-of-type(1){top:11px;left:11px;border-right:0;border-bottom:0;border-radius:6px 0 0 0;}
-.scan__corner:nth-of-type(2){top:11px;right:11px;border-left:0;border-bottom:0;border-radius:0 6px 0 0;}
-.scan__corner:nth-of-type(3){bottom:11px;left:11px;border-right:0;border-top:0;border-radius:0 0 0 6px;}
-.scan__corner:nth-of-type(4){bottom:11px;right:11px;border-left:0;border-top:0;border-radius:0 0 6px 0;}
-.scan.is-running .scan__corner,.scan.is-done .scan__corner{opacity:1;}
-
 /* боковые подписи */
 /* Разведены по противоположным углам: на узкой карточке в одну строку
    они налезают друг на друга. */
@@ -632,18 +610,6 @@ p{margin:0;}
 .scan__side--l{top:15px;left:34px;}
 .scan__side--r{bottom:15px;right:34px;}
 .scan.is-done .scan__side{color:var(--lime-deep);}
-
-/* концентрические кольца за лицом */
-.scan__rings{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:100%;max-width:290px;height:auto;
-  fill:none;stroke:var(--line);stroke-width:1;
-  opacity:.7;pointer-events:none;
-}
-.scan.is-done .scan__rings{stroke:var(--lime-line);}
-.scan__rings circle:last-of-type{stroke-dasharray:3 7;}
-
-.scan__face{position:relative;z-index:1;}
 
 /* бейдж уровня — связывает карточку с тир-листом ниже по странице */
 .scan__badge{
@@ -681,7 +647,6 @@ p{margin:0;}
 }
 @media(prefers-reduced-motion:reduce){
   .scan__badge{transition:opacity .45s var(--ease) !important;transform:none !important;}
-  .scan__corner,.scan__side,.scan__rings{transition:none !important;}
 }
 
 
@@ -929,3 +894,78 @@ p{margin:0;}
 .step__body{display:flex;flex-direction:column;flex:1;}
 .step__body p{margin-bottom:0;}
 .step__meta{margin-top:auto;padding-top:13px;}
+
+
+/* ------------------------------------------------------------
+   Сцена с персонажем.
+   Скобки видоискателя, кольцо и полигональная сетка на лице
+   нарисованы прямо в картинке — CSS их больше не дублирует,
+   иначе двоилось бы. Остаётся только луч поверх.
+   ------------------------------------------------------------ */
+.scan__stage{
+  position:relative;
+  border-radius:var(--r-card);
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:#eceeed;
+  transition:box-shadow .5s var(--ease),border-color .5s var(--ease);
+}
+.scan.is-done .scan__stage{
+  border-color:var(--lime-line);
+  box-shadow:0 0 0 1px var(--lime-tint), 0 20px 50px -28px rgba(181,244,45,.55);
+}
+
+/* height:auto обязателен: HTML-атрибут height иначе задаёт
+   фиксированную высоту и перебивает пропорции */
+.scan__shot{
+  display:block;
+  width:100%;height:auto;
+  aspect-ratio:900/715;
+  object-fit:cover;
+  filter:saturate(.62) brightness(.97);
+  transition:filter .7s var(--ease);
+}
+.scan.is-running .scan__shot,.scan.is-done .scan__shot{filter:none;}
+
+/* луч едет по всей высоте картинки */
+.scan__beam{
+  position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--lime),transparent);
+  box-shadow:0 0 26px 5px rgba(181,244,45,.5);
+  opacity:0;z-index:2;
+}
+.scan.is-running .scan__beam{animation:scan-beam 1.9s var(--ease) both;}
+/* едем по top в процентах: высота плашки зависит от ширины экрана,
+   в пикселях пришлось бы считать её скриптом */
+@keyframes scan-beam{
+  0%   {opacity:0;top:0;}
+  12%  {opacity:1;}
+  88%  {opacity:1;}
+  100% {opacity:0;top:calc(100% - 2px);}
+}
+
+/* подписи лежат на светлой плашке, поэтому тёмные, а не dim */
+.scan__side{
+  position:absolute;z-index:3;
+  font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(20,26,18,.5);white-space:nowrap;
+  transition:color .4s var(--ease);
+}
+.scan__side--l{top:12px;left:14px;}
+.scan__side--r{bottom:12px;right:14px;}
+.scan.is-done .scan__side{color:var(--lime-deep);}
+
+@media(max-width:600px){
+  .scan__side{font-size:7.5px;letter-spacing:.08em;}
+  .scan__side--l{left:11px;top:10px;}
+  .scan__side--r{right:11px;bottom:10px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .scan__beam{top:50%;}
+  .scan.is-running .scan__beam{
+    animation:scan-pulse 1.3s var(--ease) both !important;
+    animation-duration:1.3s !important;
+  }
+  @keyframes scan-pulse{0%{opacity:0;}30%{opacity:1;}100%{opacity:0;}}
+  .scan__shot{transition:filter .7s var(--ease) !important;}
+}
