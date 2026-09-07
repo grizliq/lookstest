@@ -21,7 +21,11 @@
     var score = box.querySelector('[data-role="score"]');
     if (!btn || !rows.length || !score) return;
 
-    var RUN = reduced ? 0 : 1900;
+    // Длительность одна для всех. При «уменьшить движение» прогон раньше
+    // схлопывался в 0 мс — эффект просто не успевал показаться, и выглядело
+    // это как «ничего не происходит». Само движение гасится в CSS: там луч
+    // вместо проезда даёт вспышку на месте.
+    var RUN = 1900;
     var timer = null;
 
     function state() {
@@ -53,7 +57,6 @@
 
     // счётчик балла: короткий, чтобы догонял полосы, а не отставал
     function countUp() {
-      if (reduced) { score.textContent = Math.round(target); return; }
       var t0 = null;
       var DUR = 1100;
       function step(ts) {

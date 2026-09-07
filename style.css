@@ -354,10 +354,10 @@ p{margin:0;}
     animation-duration:.001ms !important;
     animation-iteration-count:1 !important;
   }
-  /* Демо запускается по явному клику, и в нём нет ни одного перемещения —
-     только прозрачность, размытие и яркость. Такое при «уменьшить движение»
-     безопасно, поэтому отдельных спокойных кадров не нужно: достаточно
-     вернуть длительности, которые сбросило правило со звёздочкой выше. */
+  /* Внимание: правило со звёздочкой выше гасит вообще всё, включая эффекты,
+     которые пользователь запускает сам по кнопке. Для демо-разбора длительности
+     возвращаются ниже, в блоке «Демо-разбор в герое», — обязательно
+     с !important, иначе не перебьёт. */
 }
 
 /* ============================================================
@@ -487,9 +487,27 @@ p{margin:0;}
 .scan__foot .btn{width:100%;justify-content:center;}
 .scan__hint{margin:12px 0 0;font-size:12.5px;line-height:1.5;color:var(--dim);text-align:center;}
 
+/* Уменьшенное движение. Раньше здесь эффект вырубался целиком, и при
+   включённой в Windows опции «Показывать анимацию» пользователь не видел
+   вообще ничего. Убираем только проезд луча — вместо него вспышка на месте.
+   Заполнение полос и счётчик балла оставляем: это не то движение, от
+   которого укачивает. */
 @media(prefers-reduced-motion:reduce){
-  .scan__beam{animation:none !important;opacity:0 !important;}
-  .scan__fill{transition:none !important;}
+  /* !important обязателен: выше в файле стоит глобальный сброс
+     *{animation-duration:.001ms !important; transition:none !important},
+     и без !important он перебивает эти правила — эффекта не видно вообще. */
+  .scan__beam{top:50%;}
+  .scan.is-running .scan__beam{
+    animation:scan-pulse 1.3s var(--ease) both !important;
+    animation-duration:1.3s !important;
+  }
+  @keyframes scan-pulse{
+    0%   {opacity:0;}
+    30%  {opacity:1;}
+    100% {opacity:0;}
+  }
+  .scan__fill{transition:width .85s var(--ease) !important;}
+  .scan__mesh,.scan__dot{transition:opacity .5s var(--ease) !important;}
 }
 
 /* ============================================================
