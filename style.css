@@ -37,6 +37,7 @@
   --r-card:20px;
   --r-img:18px;
   --r-sm:11px;
+  --r-lg:26px;   /* не был объявлен — карточка разбора и таблица шли с прямыми углами */
 
   --shell:min(100% - 48px, 1360px);
   --shell-wide:min(100% - 40px, 1620px);
@@ -433,7 +434,7 @@ p{margin:0;}
   background:linear-gradient(168deg,var(--surface) 0%,var(--surface-3) 100%);
   border:1px solid var(--line);
   border-radius:var(--r-lg);
-  padding:22px;
+  padding:20px;
   overflow:hidden;
   transition:box-shadow .4s var(--ease),border-color .4s var(--ease);
 }
@@ -588,4 +589,94 @@ p{margin:0;}
   .ladder__seg{height:40px;}
   .ladder__seg span{font-size:11.5px;}
   .ladder__strip{gap:3px;}
+}
+
+
+/* ------------------------------------------------------------
+   Сцена вокруг лица: скобки видоискателя, кольца, боковые
+   подписи. Повторяет подачу бота, но собрано на CSS и SVG.
+   ------------------------------------------------------------ */
+.scan__stage{
+  position:relative;
+  border-radius:var(--r-card);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(181,244,45,.10) 0%, rgba(181,244,45,0) 58%),
+    linear-gradient(180deg, var(--surface-3), var(--surface-2));
+  border:1px solid var(--line);
+  padding:26px 18px 20px;
+  overflow:hidden;
+  transition:box-shadow .5s var(--ease),border-color .5s var(--ease);
+}
+.scan.is-done .scan__stage{border-color:var(--lime-line);box-shadow:inset 0 0 40px -14px rgba(181,244,45,.35);}
+
+/* скобки по углам */
+.scan__corner{position:absolute;width:17px;height:17px;border:2px solid var(--lime);opacity:.5;transition:opacity .4s var(--ease);}
+.scan__corner:nth-of-type(1){top:11px;left:11px;border-right:0;border-bottom:0;border-radius:6px 0 0 0;}
+.scan__corner:nth-of-type(2){top:11px;right:11px;border-left:0;border-bottom:0;border-radius:0 6px 0 0;}
+.scan__corner:nth-of-type(3){bottom:11px;left:11px;border-right:0;border-top:0;border-radius:0 0 0 6px;}
+.scan__corner:nth-of-type(4){bottom:11px;right:11px;border-left:0;border-top:0;border-radius:0 0 6px 0;}
+.scan.is-running .scan__corner,.scan.is-done .scan__corner{opacity:1;}
+
+/* боковые подписи */
+/* Разведены по противоположным углам: на узкой карточке в одну строку
+   они налезают друг на друга. */
+.scan__side{
+  position:absolute;
+  font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);white-space:nowrap;
+  transition:color .4s var(--ease);
+}
+.scan__side--l{top:15px;left:34px;}
+.scan__side--r{bottom:15px;right:34px;}
+.scan.is-done .scan__side{color:var(--lime-deep);}
+
+/* концентрические кольца за лицом */
+.scan__rings{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:100%;max-width:290px;height:auto;
+  fill:none;stroke:var(--line);stroke-width:1;
+  opacity:.7;pointer-events:none;
+}
+.scan.is-done .scan__rings{stroke:var(--lime-line);}
+.scan__rings circle:last-of-type{stroke-dasharray:3 7;}
+
+.scan__face{position:relative;z-index:1;}
+
+/* бейдж уровня — связывает карточку с тир-листом ниже по странице */
+.scan__badge{
+  margin:16px 0 0;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:9px 14px;
+  border:1px solid var(--line);border-radius:var(--r-pill);
+  background:var(--surface-2);
+  font-size:12.5px;color:var(--dim);
+  opacity:0;transform:translateY(4px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease),border-color .45s var(--ease),background .45s var(--ease);
+}
+.scan__badge b{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:13px;color:var(--lime);letter-spacing:-.01em;
+}
+.scan.is-done .scan__badge{opacity:1;transform:none;border-color:var(--lime-line);background:var(--lime-tint);}
+
+/* фоновая точечная сетка в секции с таблицей */
+.tiers-section{position:relative;overflow:hidden;}
+.tiers-section::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(181,244,45,.10) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(70% 55% at 50% 34%, #000 0%, transparent 100%);
+  mask-image:radial-gradient(70% 55% at 50% 34%, #000 0%, transparent 100%);
+}
+.tiers-section .shell{position:relative;}
+
+@media(max-width:600px){
+  .scan__stage{padding:24px 12px 18px;}
+  .scan__side{font-size:7.5px;letter-spacing:.08em;}
+  .scan__side--l{left:26px;}
+  .scan__side--r{right:26px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .scan__badge{transition:opacity .45s var(--ease) !important;transform:none !important;}
+  .scan__corner,.scan__side,.scan__rings{transition:none !important;}
 }
