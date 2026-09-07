@@ -462,23 +462,26 @@ p{margin:0;}
   100% {opacity:0;transform:translateY(210px);}
 }
 
-.scan__metrics{margin-top:22px;display:grid;gap:13px;}
+.scan__metrics{margin-top:20px;display:grid;gap:13px;}
 .scan__row{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;}
 .scan__name{font-size:13.5px;color:var(--muted);}
 .scan__val{font-size:13.5px;font-weight:700;color:var(--lime);font-variant-numeric:tabular-nums;min-width:34px;text-align:right;}
 .scan__track{grid-column:1/-1;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
 .scan__fill{
-  display:block;height:100%;width:0;border-radius:99px;
+  display:block;height:100%;width:0;min-width:0;border-radius:99px;
   background:linear-gradient(90deg,var(--lime-deep),var(--lime));
   transition:width 1.1s var(--ease);
 }
 
-.scan__score{
-  margin-top:22px;
-  display:flex;align-items:baseline;justify-content:center;gap:10px;
-  padding-top:20px;border-top:1px solid var(--line);
+/* шапка карточки: слева подпись, справа балл — как в боте */
+.scan__head{
+  margin-top:22px;padding-top:20px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
 }
-.scan__score b{font-size:44px;line-height:1;color:var(--lime);font-variant-numeric:tabular-nums;letter-spacing:-.03em;}
+.scan__title{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--text);}
+.scan__sub{margin:4px 0 0;font-size:12.5px;line-height:1.4;color:var(--dim);max-width:24ch;}
+.scan__score{margin:0;display:flex;align-items:baseline;gap:2px;flex:none;}
+.scan__score b{font-size:42px;line-height:1;color:var(--lime);font-variant-numeric:tabular-nums;letter-spacing:-.03em;}
 .scan__score span{font-size:14px;color:var(--dim);}
 .scan__foot{margin-top:20px;}
 .scan__foot .btn{width:100%;justify-content:center;}

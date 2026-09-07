@@ -29,36 +29,37 @@
            : box.classList.contains('is-done') ? 'done' : 'idle';
     }
 
-    // средний балл из метрик, чтобы цифра не расходилась с полосами
+    // балл — среднее по метрикам, шкала /100. Считаем из data-val,
+    // чтобы цифра никогда не разошлась с полосами.
     var target = rows.reduce(function (s, r) {
       return s + (parseInt(r.getAttribute('data-val'), 10) || 0);
-    }, 0) / rows.length / 10;
+    }, 0) / rows.length;
 
     function fill() {
       rows.forEach(function (r) {
         var v = parseInt(r.getAttribute('data-val'), 10) || 0;
         r.querySelector('.scan__fill').style.width = v + '%';
-        r.querySelector('.scan__val').textContent = v;
+        r.querySelector('.scan__val').textContent = v + '%';
       });
     }
 
     function clear() {
       rows.forEach(function (r) {
         r.querySelector('.scan__fill').style.width = '0';
-        r.querySelector('.scan__val').textContent = '0';
+        r.querySelector('.scan__val').textContent = '0%';
       });
-      score.textContent = '0.0';
+      score.textContent = '0';
     }
 
     // счётчик балла: короткий, чтобы догонял полосы, а не отставал
     function countUp() {
-      if (reduced) { score.textContent = target.toFixed(1); return; }
+      if (reduced) { score.textContent = Math.round(target); return; }
       var t0 = null;
       var DUR = 1100;
       function step(ts) {
         if (t0 === null) t0 = ts;
         var p = Math.min((ts - t0) / DUR, 1);
-        score.textContent = (target * (1 - Math.pow(1 - p, 3))).toFixed(1);
+        score.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
         if (p < 1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);

@@ -23,8 +23,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=29f6c143">
-<script src="app.js?v=3d41ad28" defer></script>
+<link rel="stylesheet" href="style.css?v=50008b10">
+<script src="app.js?v=8ef28e79" defer></script>
 </head>
 <body>
 
@@ -55,8 +55,8 @@
       <div class="hero__copy">
         <h1><span class="lime">Луксмаксинг</span>: оценка внешности по фото</h1>
         <p class="hero__lead">
-          Загрузите фото — и получите разбор внешности по чертам: пропорции лица, симметрия,
-          линия челюсти, кожа. Плюс персональный план, что улучшить первым и какой шаг
+          Загрузите фото — и получите AI-скор с разбором по трём показателям: гармония лица,
+          пропорции и симметрия. Плюс персональный план, что улучшить первым и какой шаг
           даст заметный результат быстрее всего.
           <a data-cta href="https://t.me/LooksTestBot" target="_blank" rel="sponsored noopener">Попробуйте</a> — это занимает минуту.
         </p>
@@ -91,30 +91,31 @@
               <span class="scan__beam" aria-hidden="true"></span>
             </span>
 
+            <div class="scan__head">
+              <div>
+                <p class="scan__title">AI-скор</p>
+                <p class="scan__sub">Визуальная оценка по готовому фото</p>
+              </div>
+              <p class="scan__score"><b data-role="score">0</b><span>/100</span></p>
+            </div>
+
             <div class="scan__metrics">
-              <div class="scan__row" data-val="78">
-                <span class="scan__name">Пропорции лица</span>
-                <span class="scan__val">0</span>
+              <div class="scan__row" data-val="7">
+                <span class="scan__name">Гармония лица</span>
+                <span class="scan__val">0%</span>
                 <span class="scan__track"><span class="scan__fill"></span></span>
               </div>
-              <div class="scan__row" data-val="84">
+              <div class="scan__row" data-val="6">
+                <span class="scan__name">Пропорции</span>
+                <span class="scan__val">0%</span>
+                <span class="scan__track"><span class="scan__fill"></span></span>
+              </div>
+              <div class="scan__row" data-val="7">
                 <span class="scan__name">Симметрия</span>
-                <span class="scan__val">0</span>
-                <span class="scan__track"><span class="scan__fill"></span></span>
-              </div>
-              <div class="scan__row" data-val="66">
-                <span class="scan__name">Линия челюсти</span>
-                <span class="scan__val">0</span>
-                <span class="scan__track"><span class="scan__fill"></span></span>
-              </div>
-              <div class="scan__row" data-val="72">
-                <span class="scan__name">Состояние кожи</span>
-                <span class="scan__val">0</span>
+                <span class="scan__val">0%</span>
                 <span class="scan__track"><span class="scan__fill"></span></span>
               </div>
             </div>
-
-            <p class="scan__score"><b data-role="score">0.0</b> <span>общий балл из 10</span></p>
 
             <div class="scan__foot">
               <button class="btn btn--lime scan__run" type="button">Запустить разбор</button>
@@ -147,7 +148,7 @@
             <span class="why__num">2</span>
             <h3>Алгоритм считает черты</h3>
           </div>
-          <p>Разбор идёт по опорным точкам лица: соотношения третей, ширина к высоте, симметрия, линия челюсти, состояние кожи и волос.</p>
+          <p>Разбор идёт по опорным точкам лица: соотношения третей, ширина к высоте, отклонения половин друг от друга. Из них складываются три показателя AI-скора.</p>
         </article>
 
         <article class="why__card">
@@ -177,6 +178,7 @@
   <section class="section feat" id="feat">
     <div class="shell">
       <h2 class="section__title section__title--center">Что смотрит алгоритм при оценке внешности</h2>
+      <p class="section__lead">AI-скор складывается из трёх показателей — гармонии лица, пропорций и симметрии. Ниже — что за ними стоит и какие черты на них влияют.</p>
 
       <div class="feat__grid">
         <article class="feat__card">
