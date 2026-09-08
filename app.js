@@ -33,24 +33,28 @@
            : box.classList.contains('is-done') ? 'done' : 'idle';
     }
 
-    // балл — среднее по метрикам, шкала /100. Считаем из data-val,
-    // чтобы цифра никогда не разошлась с полосами.
-    var target = rows.reduce(function (s, r) {
-      return s + (parseInt(r.getAttribute('data-val'), 10) || 0);
-    }, 0) / rows.length;
+    // Балл берём из data-score, если он задан: бот считает его не средним
+    // (64+62+61+65+58+60)/6 = 61.7, а показывает 63. Среднее оставлено
+    // запасным вариантом, чтобы цифра не пропала, если атрибут забудут.
+    var explicit = parseInt(box.getAttribute('data-score'), 10);
+    var target = isNaN(explicit)
+      ? rows.reduce(function (s, r) {
+          return s + (parseInt(r.getAttribute('data-val'), 10) || 0);
+        }, 0) / rows.length
+      : explicit;
 
     function fill() {
       rows.forEach(function (r) {
         var v = parseInt(r.getAttribute('data-val'), 10) || 0;
         r.querySelector('.scan__fill').style.width = v + '%';
-        r.querySelector('.scan__val').textContent = v + '%';
+        r.querySelector('[data-role="num"]').textContent = v;
       });
     }
 
     function clear() {
       rows.forEach(function (r) {
         r.querySelector('.scan__fill').style.width = '0';
-        r.querySelector('.scan__val').textContent = '0%';
+        r.querySelector('[data-role="num"]').textContent = '0';
       });
       score.textContent = '0';
     }

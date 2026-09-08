@@ -457,9 +457,11 @@ p{margin:0;}
   100% {opacity:0;transform:translateY(210px);}
 }
 
-.scan__metrics{margin-top:16px;display:grid;gap:10px;}
-.scan__row{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;}
-.scan__name{font-size:13.5px;color:var(--muted);}
+/* Две колонки, как в мини-приложении: шесть показателей в один столбец
+   не помещаются в первый экран. */
+.scan__metrics{margin-top:13px;display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.scan__row{display:grid;grid-template-columns:1fr auto;gap:7px 8px;align-items:start;}
+.scan__name{font-size:12.5px;line-height:1.25;color:var(--muted);}
 .scan__val{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;font-weight:600;color:var(--lime);font-variant-numeric:tabular-nums;min-width:34px;text-align:right;}
 .scan__track{grid-column:1/-1;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
 .scan__fill{
@@ -480,7 +482,7 @@ p{margin:0;}
 .scan__score span{font-size:14px;color:var(--dim);}
 .scan__foot{margin-top:16px;}
 .scan__foot .btn{width:100%;justify-content:center;}
-.scan__hint{margin:10px 0 0;font-size:12px;line-height:1.5;color:var(--dim);text-align:center;}
+.scan__hint{margin:8px 0 0;font-size:11.5px;line-height:1.5;color:var(--dim);text-align:center;}
 
 /* Уменьшенное движение. Раньше здесь эффект вырубался целиком, и при
    включённой в Windows опции «Показывать анимацию» пользователь не видел
@@ -995,10 +997,10 @@ p{margin:0;}
   .hero__lead{margin-top:20px;font-size:16.5px;}
   .hero__actions{margin-top:30px;}
   .scan{max-width:374px;}
-  .scan__stage{max-height:27vh;}
+  .scan__stage{max-height:25vh;}
   .scan__head{margin-top:13px;padding-top:12px;}
   .scan__score b{font-size:32px;}
-  .scan__metrics{margin-top:13px;gap:9px;}
+  .scan__metrics{margin-top:11px;gap:7px 10px;}
   .scan__badge{margin-top:11px;padding:6px 12px;}
   .scan__foot{margin-top:13px;}
   .scan__hint{display:none;}
