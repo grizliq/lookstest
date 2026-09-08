@@ -23,8 +23,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=b67d6c7d">
-<script src="app.js?v=7daabf76" defer></script>
+<link rel="stylesheet" href="style.css?v=f06671de">
+<script src="app.js?v=61d83917" defer></script>
 </head>
 <body>
 
@@ -92,6 +92,10 @@
               <img class="scan__shot" src="img/scan-statue.png"
                    alt="Разбор внешности: сетка опорных точек на лице античной статуи"
                    width="440" height="612" fetchpriority="high" decoding="async">
+              <!-- Отдельный слой только с линиями сетки: свечение вешаем на него,
+                   иначе drop-shadow идёт по альфе и обводит весь силуэт бюста. -->
+              <img class="scan__glow" src="img/scan-mesh.png" alt=""
+                   width="440" height="612" decoding="async" aria-hidden="true">
               <span class="scan__beam" aria-hidden="true"></span>
             </div>
 
@@ -130,7 +134,6 @@
           </div>
         </div>
 
-        <span class="tag">Оценка внешности / рейт по фото / план улучшений</span>
       </div>
     </div>
   </section>
