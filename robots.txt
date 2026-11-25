@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lookstest.ru/sitemap.xml
+Sitemap: https://luksmaksing.ru/sitemap.xml
