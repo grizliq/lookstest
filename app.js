@@ -28,6 +28,7 @@
     // вместо проезда даёт вспышку на месте.
     var RUN = 2600;
     var timer = null;
+    var scoreFrame = null;
 
     function state() {
       return box.classList.contains('is-running') ? 'running'
@@ -68,9 +69,9 @@
         if (t0 === null) t0 = ts;
         var p = Math.min((ts - t0) / DUR, 1);
         score.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-        if (p < 1) requestAnimationFrame(step);
+        scoreFrame = p < 1 ? requestAnimationFrame(step) : null;
       }
-      requestAnimationFrame(step);
+      scoreFrame = requestAnimationFrame(step);
     }
 
     function run() {
@@ -82,6 +83,9 @@
       fill();
       countUp();
       timer = setTimeout(function () {
+        if (scoreFrame !== null) cancelAnimationFrame(scoreFrame);
+        scoreFrame = null;
+        score.textContent = Math.round(target);
         box.classList.remove('is-running');
         box.classList.add('is-done');
         btn.textContent = 'Показать пример снова';
