@@ -17,6 +17,7 @@
     if (!box) return;
 
     var btn = box.querySelector('.scan__run');
+    var photoCta = box.querySelector('.scan__photo-cta');
     var rows = [].slice.call(box.querySelectorAll('.scan__row'));
     var score = box.querySelector('[data-role="score"]');
     if (!btn || !rows.length || !score) return;
@@ -76,15 +77,19 @@
       clearTimeout(timer);
       box.classList.remove('is-done');
       box.classList.add('is-running');
-      btn.textContent = 'Идёт разбор…';
-      btn.disabled = true;
+      btn.textContent = 'Показываем пример…';
+      btn.setAttribute('aria-disabled', 'true');
       fill();
       countUp();
       timer = setTimeout(function () {
         box.classList.remove('is-running');
         box.classList.add('is-done');
-        btn.textContent = 'Показать снова';
-        btn.disabled = false;
+        btn.textContent = 'Показать пример снова';
+        btn.removeAttribute('aria-disabled');
+        if (photoCta) {
+          photoCta.hidden = false;
+          btn.classList.replace('btn--lime', 'btn--ghost');
+        }
       }, RUN);
     }
 
@@ -92,12 +97,16 @@
       clearTimeout(timer);
       box.classList.remove('is-done', 'is-running');
       clear();
-      btn.textContent = 'Запустить разбор';
     }
 
     btn.addEventListener('click', function () {
-      if (state() === 'done') { reset(); setTimeout(run, 160); return; }
-      if (state() === 'running') return;
+      if (btn.getAttribute('aria-disabled') === 'true') return;
+      if (state() === 'done') {
+        reset();
+        btn.setAttribute('aria-disabled', 'true');
+        timer = setTimeout(run, 160);
+        return;
+      }
       run();
     });
 
